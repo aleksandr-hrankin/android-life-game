@@ -9,14 +9,14 @@ import android.widget.SeekBar;
 import ua.antibyte.life_game.GameActivity;
 import ua.antibyte.life_game.R;
 
-public class SettingsListener implements View.OnClickListener {
+public class BtnSettingsListener implements View.OnClickListener {
     private final Context context;
     private LinearLayout layoutSettingsButtons;
     private FrameLayout layoutSeekBarScreenSize;
     private SeekBar seekBarSpeed;
     private boolean isVisibly = false;
 
-    public SettingsListener(Context context) {
+    public BtnSettingsListener(Context context) {
         this.context = context;
         init();
     }

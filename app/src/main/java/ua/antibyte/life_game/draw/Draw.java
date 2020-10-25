@@ -5,70 +5,51 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import ua.antibyte.life_game.service.DrawService;
-import ua.antibyte.life_game.util.WindowUtil;
-
+import lombok.Getter;
+import lombok.Setter;
+import ua.antibyte.life_game.service.DrawingExecutor;
+import ua.antibyte.life_game.service.impl.DrawingExecutorImpl;
 
 public class Draw extends View {
-    private final Context context;
-    private final Paint paint;
-    private final DrawService drawService;
-
-    Set<CellN> set = new LinkedHashSet<>();
-
+    private final DrawingExecutor drawingExecutor;
+    @Getter
+    private final Set<CellN> cellContainer = new LinkedHashSet<>();
+    @Getter
+    @Setter
     private CellN[][] grid;
 
-    public Draw(Context context, Paint paint, DrawService drawService) {
+    public Draw(Context context, Paint paint, CellN[][] grid) {
         super(context);
-        this.context = context;
-        this.paint = paint;
-        this.drawService = drawService;
-
-        int cellWidth = (int) (100 * context.getResources().getDisplayMetrics().density);
-        int rowLength = WindowUtil.getWindowSize(context).y / cellWidth;
-        int columnLength = WindowUtil.getWindowSize(context).x / cellWidth;
-        grid = GridN.of(rowLength, columnLength, cellWidth);
-
+        this.grid = grid;
+        this.drawingExecutor = new DrawingExecutorImpl(paint);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawService.drawGrid(canvas, grid);
+        drawingExecutor.drawGrid(canvas, grid);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int cellWidth = (int) (100 * context.getResources().getDisplayMetrics().density);
-
-        int y = (int) event.getY() / cellWidth;
-        int x = (int) event.getX() / cellWidth;
+        int y = (int) event.getY() / grid[0][0].getWidth();
+        int x = (int) event.getX() / grid[0][0].getWidth();
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                // Первое касание. Сохраняем начальную позицию
-//                invalidate();
-                if (set.size() == 1) {
-                    set.remove(set.iterator().next());
+                if (!cellContainer.isEmpty()) {
+                    cellContainer.remove(cellContainer.iterator().next());
                 }
-
             case MotionEvent.ACTION_MOVE:
-                if (!set.contains(grid[y][x])) {
+                if (!cellContainer.contains(grid[y][x])) {
                     grid[y][x].setActive(!grid[y][x].isActive());
-                    set.add(grid[y][x]);
+                    cellContainer.add(grid[y][x]);
                     invalidate();
                 }
-                if (set.size() == 2) {
-                    set.remove(set.iterator().next());
+                if (cellContainer.size() == 2) {
+                    cellContainer.remove(cellContainer.iterator().next());
                 }
-//                invalidate();
-            case MotionEvent.ACTION_UP:
-                // Завершаем рисование и рисуем всё в канвас.
-//                invalidate();
         }
         return true;
     }

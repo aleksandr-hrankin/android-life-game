@@ -2,14 +2,13 @@ package ua.antibyte.life_game.service.impl;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
 import ua.antibyte.life_game.draw.CellN;
-import ua.antibyte.life_game.service.DrawService;
+import ua.antibyte.life_game.service.DrawingExecutor;
 
-public class DrawServiceImpl implements DrawService {
+public class DrawingExecutorImpl implements DrawingExecutor {
     private final Paint paint;
 
-    public DrawServiceImpl(Paint paint) {
+    public DrawingExecutorImpl(Paint paint) {
         this.paint = paint;
     }
 
@@ -26,19 +25,8 @@ public class DrawServiceImpl implements DrawService {
                 } else {
                     paint.setStyle(Paint.Style.STROKE);
                 }
-
                 canvas.drawRect(x, y, x + cell.getWidth(), y + cell.getWidth(), paint);
             }
         }
-    }
-
-    @Override
-    public void fillGridRandom() {
-
-    }
-
-    @Override
-    public void clearGrid() {
-
     }
 }
