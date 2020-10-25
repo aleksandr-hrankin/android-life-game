@@ -14,7 +14,7 @@ import ua.antibyte.life_game.R;
 import ua.antibyte.life_game.util.WindowUtil;
 
 public class DrawView extends View {
-    private static final int PAINT_WIDTH = 4;
+    private static final int PAINT_WIDTH = 1;
     private static final int PAINT_COLOR = Color.BLACK;
     private int cell_side = 22;
     private float dp;
@@ -47,8 +47,8 @@ public class DrawView extends View {
         cellSideDp = (int) (cell_side * dp);
 
         width_playing_filed = WindowUtil.getWindowSize(context).x;
-//        height_playing_filed = WindowUtil.getWindowSize(context).y;
-        height_playing_filed = ((GameActivity) context).findViewById(R.id.layout_playing_field).getLayoutParams().height;
+        height_playing_filed = WindowUtil.getWindowSize(context).y;
+//        height_playing_filed = ((GameActivity) context).findViewById(R.id.layout_playing_field).getLayoutParams().height;
         ;
 
         reloadCells();
