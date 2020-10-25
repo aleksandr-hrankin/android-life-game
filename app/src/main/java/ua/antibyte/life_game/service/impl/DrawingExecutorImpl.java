@@ -2,7 +2,7 @@ package ua.antibyte.life_game.service.impl;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import ua.antibyte.life_game.draw.CellN;
+import ua.antibyte.life_game.draw.Cell;
 import ua.antibyte.life_game.service.DrawingExecutor;
 
 public class DrawingExecutorImpl implements DrawingExecutor {
@@ -13,10 +13,10 @@ public class DrawingExecutorImpl implements DrawingExecutor {
     }
 
     @Override
-    public void drawGrid(Canvas canvas, CellN[][] grid) {
+    public void drawGrid(Canvas canvas, Cell[][] grid) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                CellN cell = grid[i][j];
+                Cell cell = grid[i][j];
                 int x = cell.getCoordinates()[0];
                 int y = cell.getCoordinates()[1];
 

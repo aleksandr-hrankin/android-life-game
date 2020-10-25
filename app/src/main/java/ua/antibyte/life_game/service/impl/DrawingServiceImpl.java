@@ -3,9 +3,9 @@ package ua.antibyte.life_game.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import ua.antibyte.life_game.draw.CellN;
+import ua.antibyte.life_game.draw.Cell;
 import ua.antibyte.life_game.draw.Draw;
-import ua.antibyte.life_game.draw.GridN;
+import ua.antibyte.life_game.draw.Grid;
 import ua.antibyte.life_game.service.DrawingService;
 import ua.antibyte.life_game.util.WindowUtil;
 
@@ -43,8 +43,8 @@ public class DrawingServiceImpl implements DrawingService {
 
     @Override
     public void nextGeneration() {
-        List<CellN> nextGen = calculateNextGeneration();
-        for (CellN cell : nextGen) {
+        List<Cell> nextGen = calculateNextGeneration();
+        for (Cell cell : nextGen) {
             int i = cell.getIndices()[0];
             int j = cell.getIndices()[1];
             draw.getGrid()[i][j] = cell;
@@ -84,7 +84,7 @@ public class DrawingServiceImpl implements DrawingService {
         int cellWidth = (int) (size * draw.getContext().getResources().getDisplayMetrics().density);
         int rowLength = WindowUtil.getWindowSize(draw.getContext()).y / cellWidth;
         int columnLength = WindowUtil.getWindowSize(draw.getContext()).x / cellWidth;
-        draw.setGrid(GridN.of(rowLength, columnLength, cellWidth));
+        draw.setGrid(Grid.of(rowLength, columnLength, cellWidth));
         draw.invalidate();
     }
 
@@ -93,28 +93,28 @@ public class DrawingServiceImpl implements DrawingService {
         speed = value;
     }
 
-    private List<CellN> calculateNextGeneration() {
-        List<CellN> generation = new ArrayList<>();
+    private List<Cell> calculateNextGeneration() {
+        List<Cell> generation = new ArrayList<>();
         for (int i = 1; i < draw.getGrid().length - 1; i++) {
             for (int j = 1; j < draw.getGrid()[i].length - 1; j++) {
-                CellN currentCell = draw.getGrid()[i][j];
+                Cell currentCell = draw.getGrid()[i][j];
                 generation.add(updateCell(currentCell));
             }
         }
         return generation;
     }
-    private CellN updateCell(CellN cell) {
+    private Cell updateCell(Cell cell) {
         int[] statusNeighbors = findOutTheStatusOfNeighbors(cell);
         if (!cell.isActive() && statusNeighbors[0] == 3) {
-            return new CellN(cell.getCoordinates(), cell.getIndices(), cell.getWidth(), true);
+            return new Cell(cell.getCoordinates(), cell.getIndices(), cell.getWidth(), true);
         }
         if (cell.isActive() && (statusNeighbors[0] < 2 || statusNeighbors[0] > 3)) {
-            return new CellN(cell.getCoordinates(), cell.getIndices(), cell.getWidth(), false);
+            return new Cell(cell.getCoordinates(), cell.getIndices(), cell.getWidth(), false);
         }
         return cell;
     }
 
-    private int[] findOutTheStatusOfNeighbors(CellN cell) {
+    private int[] findOutTheStatusOfNeighbors(Cell cell) {
         int[] status = new int[2];
         int[] indices = cell.getIndices();
         for (int i = indices[0] - 1; i <= indices[0] + 1; i++) {

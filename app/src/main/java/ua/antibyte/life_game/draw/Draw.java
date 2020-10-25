@@ -15,12 +15,12 @@ import ua.antibyte.life_game.service.impl.DrawingExecutorImpl;
 public class Draw extends View {
     private final DrawingExecutor drawingExecutor;
     @Getter
-    private final Set<CellN> cellContainer = new LinkedHashSet<>();
+    private final Set<Cell> cellContainer = new LinkedHashSet<>();
     @Getter
     @Setter
-    private CellN[][] grid;
+    private Cell[][] grid;
 
-    public Draw(Context context, Paint paint, CellN[][] grid) {
+    public Draw(Context context, Paint paint, Cell[][] grid) {
         super(context);
         this.grid = grid;
         this.drawingExecutor = new DrawingExecutorImpl(paint);

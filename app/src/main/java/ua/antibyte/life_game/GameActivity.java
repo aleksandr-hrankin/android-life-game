@@ -9,9 +9,9 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ua.antibyte.life_game.draw.CellN;
+import ua.antibyte.life_game.draw.Cell;
 import ua.antibyte.life_game.draw.Draw;
-import ua.antibyte.life_game.draw.GridN;
+import ua.antibyte.life_game.draw.Grid;
 import ua.antibyte.life_game.listener.BtnClearFiledListener;
 import ua.antibyte.life_game.listener.BtnFillFieldRandomListener;
 import ua.antibyte.life_game.listener.BtnNextGenerationListener;
@@ -41,7 +41,7 @@ public class GameActivity extends AppCompatActivity {
     private SeekBar seekBarSpeed;
 
     private Draw draw;
-    private CellN[][] grid;
+    private Cell[][] grid;
     private DrawingService drawingService;
 
     @Override
@@ -54,7 +54,7 @@ public class GameActivity extends AppCompatActivity {
         int cellWidth = (int) (seekBarScreenSize.getProgress() * getResources().getDisplayMetrics().density);
         int rowLength = WindowUtil.getWindowSize(this).y / cellWidth;
         int columnLength = WindowUtil.getWindowSize(this).x / cellWidth;
-        grid =  GridN.of(rowLength, columnLength, cellWidth);
+        grid =  Grid.of(rowLength, columnLength, cellWidth);
 
         draw = new Draw(this, createPaint(), grid);
         layoutPlayingField = findViewById(R.id.layout_playing_field);

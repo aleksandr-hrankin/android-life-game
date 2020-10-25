@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CellN implements Cloneable {
+public class Cell implements Cloneable {
     private int[] coordinates;
     private int[] indices;
     private int width;
