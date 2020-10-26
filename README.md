@@ -17,9 +17,9 @@ vertically, or diagonally adjacent. At each step in time, the following transiti
   - Сlear field
   - Fill the field with random cells
   - Increase / decrease field
-##### Action with time::<br>
+##### Action with time:<br>
   - Increase / decrease the generation time of a new generation
-##### Action with generation::<br>
+##### Action with generation:<br>
   - Enable / disable infinite generation
   - Generate only next generation
 
