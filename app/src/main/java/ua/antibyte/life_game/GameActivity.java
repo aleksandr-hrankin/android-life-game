@@ -1,116 +1,103 @@
 package ua.antibyte.life_game;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
-import ua.antibyte.life_game.view.DrawView;
+import androidx.appcompat.app.AppCompatActivity;
+
+import ua.antibyte.life_game.draw.Cell;
+import ua.antibyte.life_game.draw.Draw;
+import ua.antibyte.life_game.draw.Grid;
+import ua.antibyte.life_game.listener.BtnClearFiledListener;
+import ua.antibyte.life_game.listener.BtnFillFieldRandomListener;
+import ua.antibyte.life_game.listener.BtnNextGenerationListener;
+import ua.antibyte.life_game.listener.BtnStartListener;
+import ua.antibyte.life_game.listener.BtnSettingsListener;
+import ua.antibyte.life_game.listener.BtnStopListener;
+import ua.antibyte.life_game.listener.SeekBarScreenSizeListener;
+import ua.antibyte.life_game.listener.SeekBarSpeedListener;
+import ua.antibyte.life_game.service.DrawingService;
+import ua.antibyte.life_game.service.impl.DrawingServiceImpl;
+import ua.antibyte.life_game.util.WindowUtil;
 
 public class GameActivity extends AppCompatActivity {
     private RelativeLayout layoutPlayingField;
-    private ImageButton btnClear;
-    private ImageButton btnReload;
-    private ImageButton btnSlower;
-    private ImageButton btnFaster;
-    private ImageButton btnReduce;
-    private ImageButton btnIncrease;
-    private ImageButton btnPrev;
-    private ImageButton btnPause;
-    private ImageButton btnPlay;
-    private ImageButton btnNext;
 
-    private DrawView drawView;
+    private ImageButton btnClearField;
+    private ImageButton btnFillFieldRandom;
+    private ImageButton btnSettings;
+    private ImageButton btnGenerationConditions;
+    private ImageButton btnSave;
+    private ImageButton btnPrevGeneration;
+    private ImageButton btnNextGeneration;
+    private ImageButton btnStart;
+    private ImageButton btnStop;
+
+    private SeekBar seekBarScreenSize;
+    private SeekBar seekBarSpeed;
+
+    private Draw draw;
+    private Cell[][] grid;
+    private DrawingService drawingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        btnClear = findViewById(R.id.btn_clear);
-        btnReload = findViewById(R.id.btn_reload);
-        btnSlower = findViewById(R.id.btn_slower);
-        btnFaster = findViewById(R.id.btn_faster);
-        btnReduce = findViewById(R.id.btn_reduce);
-        btnIncrease = findViewById(R.id.btn_increase);
-        btnPrev = findViewById(R.id.btn_prev);
-        btnPause = findViewById(R.id.btn_pause);
-        btnPlay = findViewById(R.id.btn_play);
-        btnNext = findViewById(R.id.btn_next);
+        init();
 
+        int cellWidth = (int) (seekBarScreenSize.getProgress() * getResources().getDisplayMetrics().density);
+        int rowLength = WindowUtil.getWindowSize(this).y / cellWidth;
+        int columnLength = WindowUtil.getWindowSize(this).x / cellWidth;
+        grid =  Grid.of(rowLength, columnLength, cellWidth);
 
-        drawView = new DrawView(this);
+        draw = new Draw(this, createPaint(), grid);
         layoutPlayingField = findViewById(R.id.layout_playing_field);
-        layoutPlayingField.addView(drawView);
+        layoutPlayingField.addView(draw);
 
+        drawingService = new DrawingServiceImpl(draw);
 
-        onClick();
+        setClickListener();
     }
 
-    public void onClick() {
-        View.OnClickListener onClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.btn_clear:
-                        drawView.clearCells();
-                        btnPause.setVisibility(View.GONE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.btn_reload:
-                        btnPause.setVisibility(View.GONE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                        drawView.reload();
-                        break;
-                    case R.id.btn_slower:
-                        drawView.reduceSpeed();
-                        break;
-                    case R.id.btn_faster:
-                        drawView.increaseSpeed();
-                        break;
-                    case R.id.btn_reduce:
-                        btnPause.setVisibility(View.GONE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                        drawView.reduceCell();
-                        break;
-                    case R.id.btn_increase:
-                        btnPause.setVisibility(View.GONE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                        drawView.increaseCell();
-                        break;
-                    case R.id.btn_prev:
-                        break;
-                    case R.id.btn_pause:
-                        btnPause.setVisibility(View.GONE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                        drawView.pause();
-                        break;
-                    case R.id.btn_play:
-                        btnPlay.setVisibility(View.GONE);
-                        btnPause.setVisibility(View.VISIBLE);
-                        drawView.play();
-                        break;
-                    case R.id.btn_next:
-                        btnPause.setVisibility(View.GONE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                        drawView.next();
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown button id");
-                }
-            }
-        };
-        btnClear.setOnClickListener(onClick);
-        btnReload.setOnClickListener(onClick);
-        btnSlower.setOnClickListener(onClick);
-        btnFaster.setOnClickListener(onClick);
-        btnReduce.setOnClickListener(onClick);
-        btnIncrease.setOnClickListener(onClick);
-        btnPrev.setOnClickListener(onClick);
-        btnPause.setOnClickListener(onClick);
-        btnPlay.setOnClickListener(onClick);
-        btnNext.setOnClickListener(onClick);
+
+    private void init() {
+        btnClearField = findViewById(R.id.btn_clear_field);
+        btnFillFieldRandom = findViewById(R.id.btn_fill_field_random);
+        btnSettings = findViewById(R.id.btn_settings);
+        btnGenerationConditions = findViewById(R.id.btn_generation_conditions);
+        btnSave = findViewById(R.id.btn_save);
+        btnPrevGeneration = findViewById(R.id.btn_prev_generation);
+        btnNextGeneration = findViewById(R.id.btn_next_generation);
+        btnStart = findViewById(R.id.btn_start);
+        btnStop = findViewById(R.id.btn_stop);
+
+        seekBarScreenSize = findViewById(R.id.seek_bar_screen_size);
+        seekBarSpeed = findViewById(R.id.seek_bar_speed);
+    }
+
+    private void setClickListener() {
+        btnClearField.setOnClickListener(new BtnClearFiledListener(this, drawingService));
+        btnFillFieldRandom.setOnClickListener(new BtnFillFieldRandomListener(this, drawingService));
+        btnSettings.setOnClickListener(new BtnSettingsListener(this));
+        btnNextGeneration.setOnClickListener(new BtnNextGenerationListener(drawingService));
+        btnStart.setOnClickListener(new BtnStartListener(this, drawingService));
+        btnStop.setOnClickListener(new BtnStopListener(this, drawingService));
+
+        seekBarScreenSize.setOnSeekBarChangeListener(new SeekBarScreenSizeListener(this, drawingService));
+        seekBarSpeed.setOnSeekBarChangeListener(new SeekBarSpeedListener(this, drawingService));
+    }
+
+    private Paint createPaint() {
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setStrokeWidth(0);
+        paint.setStyle(Paint.Style.STROKE);
+        return paint;
     }
 }
