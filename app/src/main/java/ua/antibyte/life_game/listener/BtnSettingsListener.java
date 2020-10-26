@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-
 import ua.antibyte.life_game.GameActivity;
 import ua.antibyte.life_game.R;
 

@@ -1,7 +1,6 @@
 package ua.antibyte.life_game.listener;
 
 import android.view.View;
-
 import ua.antibyte.life_game.service.DrawingService;
 
 public class BtnNextGenerationListener implements View.OnClickListener {

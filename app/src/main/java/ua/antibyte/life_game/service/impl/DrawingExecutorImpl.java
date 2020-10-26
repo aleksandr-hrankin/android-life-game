@@ -14,13 +14,12 @@ public class DrawingExecutorImpl implements DrawingExecutor {
 
     @Override
     public void drawGrid(Canvas canvas, Cell[][] grid) {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                Cell cell = grid[i][j];
+        for (Cell[] cells : grid) {
+            for (Cell cell : cells) {
                 int x = cell.getCoordinates()[0];
                 int y = cell.getCoordinates()[1];
 
-                if (grid[i][j].isActive()) {
+                if (cell.isActive()) {
                     paint.setStyle(Paint.Style.FILL);
                 } else {
                     paint.setStyle(Paint.Style.STROKE);
