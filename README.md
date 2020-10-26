@@ -1,6 +1,8 @@
 # Game of Life
 The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.<br>
 
+![true](https://user-images.githubusercontent.com/60775248/97164438-2e56bd80-1793-11eb-8565-48b5fc10a512.gif)
+
 The universe of the Game of Life is an two-dimensional orthogonal grid of square cells, each of which is in one of two possible states,<br> 
 live or dead, (or populated and unpopulated, respectively). Every cell interacts with its eight neighbours, which are the cells that are horizontally,<br> 
 vertically, or diagonally adjacent. At each step in time, the following transitions occur:<br>
@@ -23,5 +25,3 @@ vertically, or diagonally adjacent. At each step in time, the following transiti
 
 # Technologies used<br>
   Java, XML, Gradle, Git
- 
-![true](https://user-images.githubusercontent.com/60775248/97164438-2e56bd80-1793-11eb-8565-48b5fc10a512.gif)
