@@ -3,7 +3,6 @@ package ua.antibyte.life_game.listener;
 import android.content.Context;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import ua.antibyte.life_game.GameActivity;
 import ua.antibyte.life_game.R;
 import ua.antibyte.life_game.service.DrawingService;
@@ -14,7 +13,6 @@ public class SeekBarSpeedListener implements SeekBar.OnSeekBarChangeListener {
 
     public SeekBarSpeedListener(Context context, DrawingService drawingService) {
         this.drawingService = drawingService;
-
         twSpeed = ((GameActivity) context).findViewById(R.id.tw_speed);
     }
 
@@ -25,12 +23,8 @@ public class SeekBarSpeedListener implements SeekBar.OnSeekBarChangeListener {
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 }

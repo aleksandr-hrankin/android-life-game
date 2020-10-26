@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import ua.antibyte.life_game.draw.Cell;
 import ua.antibyte.life_game.draw.Draw;
 import ua.antibyte.life_game.draw.Grid;
@@ -40,29 +38,22 @@ public class GameActivity extends AppCompatActivity {
     private SeekBar seekBarScreenSize;
     private SeekBar seekBarSpeed;
 
-    private Draw draw;
-    private Cell[][] grid;
-    private DrawingService drawingService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
         init();
 
         int cellWidth = (int) (seekBarScreenSize.getProgress() * getResources().getDisplayMetrics().density);
         int rowLength = WindowUtil.getWindowSize(this).y / cellWidth;
         int columnLength = WindowUtil.getWindowSize(this).x / cellWidth;
-        grid =  Grid.of(rowLength, columnLength, cellWidth);
+        Cell[][] grid = Grid.of(rowLength, columnLength, cellWidth);
 
-        draw = new Draw(this, createPaint(), grid);
+        Draw draw = new Draw(this, createPaint(), grid);
         layoutPlayingField = findViewById(R.id.layout_playing_field);
         layoutPlayingField.addView(draw);
 
-        drawingService = new DrawingServiceImpl(draw);
-
-        setClickListener();
+        setClickListener(new DrawingServiceImpl(draw));
     }
 
 
@@ -81,7 +72,7 @@ public class GameActivity extends AppCompatActivity {
         seekBarSpeed = findViewById(R.id.seek_bar_speed);
     }
 
-    private void setClickListener() {
+    private void setClickListener(DrawingService drawingService) {
         btnClearField.setOnClickListener(new BtnClearFiledListener(this, drawingService));
         btnFillFieldRandom.setOnClickListener(new BtnFillFieldRandomListener(this, drawingService));
         btnSettings.setOnClickListener(new BtnSettingsListener(this));

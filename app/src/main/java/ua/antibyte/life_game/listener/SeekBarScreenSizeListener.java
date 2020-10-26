@@ -3,7 +3,6 @@ package ua.antibyte.life_game.listener;
 import android.content.Context;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import ua.antibyte.life_game.GameActivity;
 import ua.antibyte.life_game.R;
 import ua.antibyte.life_game.service.DrawingService;
